@@ -1,3 +1,5 @@
+import { IItem } from './iitem'
+
 export interface IRssEnvolope {
   rss: {
     channel: {
@@ -7,7 +9,7 @@ export interface IRssEnvolope {
       language,
       copyright,
       lastBuildDate,
-      item: []
+      item: IItem[]
     }
   }
 }

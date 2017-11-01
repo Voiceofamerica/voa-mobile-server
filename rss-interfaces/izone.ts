@@ -9,11 +9,14 @@ const feedUrl = `http://www.rferl.org/mobapp/zones.xml`
 export interface IZone {
   id: number
   site: number
-  /** Date and time of last zone content modification **/
+  /** Date and time of last zone content modification */
   hash: string
-  /** If zone is article zone or zone for gallery or video (values are a,v,p or its combinations) **/
+  /** If zone is article zone or zone for gallery or video (values are a,v,p or its combinations) */
   type: string
-  /** If zone is Broadcast zone **/
+  /** If zone is Broadcast zone */
   broadcast: boolean
   name: string
 }
+
+let temp: IZone
+temp.

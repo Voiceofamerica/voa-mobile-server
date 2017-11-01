@@ -1,3 +1,5 @@
-export inteface IItem {
+import { IArticle } from './iarticle'
 
+export interface IItem {
+  content: IArticle[]
 }

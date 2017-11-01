@@ -1,16 +1,21 @@
+const feedUrl = 'https://www.rferl.org/mobapp/scheduler.xml'
+
 export interface IArticle {
   id: number
   site: number
   zone: number
-  type: string //a-article, v-video or p-photogallery)
+  /** a-article, v-video or p-photogallery */
+  type: string
   pubDate: string
   lastUpdated: string
   url: string
-  twitter: string // Short alternative of the article url. Can be used for Twitter like web site on so on.
+  /** Short alternative of the article url. Can be used for Twitter like web site on so on. */
+  twitter: string
   title: string
   introduction: string
   content: string
-  authors: { // author array
+  /** author array */
+  authors: {
     name: {
       first: string
       middle: string
@@ -30,29 +35,36 @@ export interface IArticle {
     audioTitle: string
     audioDescription: string
     id: number
-    duration: number // seconds
-    mime: string // audio/mp3
+    /** seconds */
+    duration: number
+    /** audio/mp3 */
+    mime: string
     url: string
     date: string
   }
   video: {
     videoDescription: string
     guid: string
-    relType: number // Defines relation between article and video => 0=SameItem, 1=MainImage,2=EmbededInContent
+    /** Defines relation between article and video => 0=SameItem, 1=MainImage,2=EmbededInContent */
+    relType: number
     id: number
     width: number
     height: number
-    duration: number // seconds
+    /** seconds */
+    duration: number
     url: string
     thumbnail: string
   }
-  relatedStories: { // story array
+  /** story array */
+  relatedStories: {
     storyTitle: string
     id: number
     pubDate: string
-    type: string //a-article, v-video or p-photogallery)
+    /** a-article, v-video or p-photogallery */
+    type: string
     url: string
-    twitter: string // Short alternative of the article url. Can be used for Twitter like web site on so on.
+    /** Short alternative of the article url. Can be used for Twitter like web site on so on. */
+    twitter: string
     thumbnailUrl: string
   }[]
 }
