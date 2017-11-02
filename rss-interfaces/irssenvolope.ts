@@ -1,4 +1,4 @@
-import { IItem } from './iitem'
+import { IRssArticleEnvelope } from './irssarticle'
 
 export interface IRssEnvolope {
   rss: {
@@ -9,7 +9,7 @@ export interface IRssEnvolope {
       language,
       copyright,
       lastBuildDate,
-      item: IItem[]
+      item: IRssArticleEnvelope[]
     }
   }
 }
