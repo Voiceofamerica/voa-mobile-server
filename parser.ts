@@ -10,7 +10,7 @@ const parseStringAsync = promisify(parseString)
 
 export async function getArticles(): Promise<IRssArticle[]> {
   let res = await request(ArticlesFeedUrl)
-  let data: IRssEnvolope = parseStringAsync(res, {explicitArray: false, mergeAttrs: true})
+  let data: IRssEnvolope = await parseStringAsync(res, {explicitArray: false, mergeAttrs: true})
   return data.rss.channel.item.map(i => i.article)
 }
 

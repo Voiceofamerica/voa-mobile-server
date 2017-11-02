@@ -92,7 +92,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/voa-feedparser/dev/1509656024282-2017-11-02T20:53:44.282Z/voa-feedparser.zip"
+          "S3Key": "serverless/voa-feedparser/dev/1509656902990-2017-11-02T21:08:22.990Z/voa-feedparser.zip"
         },
         "FunctionName": "voa-feedparser-dev-articles",
         "Handler": "handler.articles",
@@ -111,14 +111,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "ArticlesLambdaVersionNywADjfnkDvkYRqtMJiDyU0UnYVGtpeBJU2o5Hv50": {
+    "ArticlesLambdaVersionO9DH47ytNzOffC95QYqXHCB1i40Kx8Wo5gLrnuOTCM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ArticlesLambdaFunction"
         },
-        "CodeSha256": "NywADjfnkDvkYRqtMJiDyU+0+UnYVGtpeBJU2o5Hv50="
+        "CodeSha256": "O9DH47ytNzOffC95Q+YqXHCB1i40Kx8Wo5gLrnuOTCM="
       }
     },
     "ApiGatewayRestApi": {
@@ -181,7 +181,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1509656024354": {
+    "ApiGatewayDeployment1509656903172": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -236,7 +236,7 @@
     "ArticlesLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ArticlesLambdaVersionNywADjfnkDvkYRqtMJiDyU0UnYVGtpeBJU2o5Hv50"
+        "Ref": "ArticlesLambdaVersionO9DH47ytNzOffC95QYqXHCB1i40Kx8Wo5gLrnuOTCM"
       }
     },
     "ServiceEndpoint": {
