@@ -1,4 +1,17 @@
-export const ArticlesFeedUrl = 'https://www.rferl.org/mobapp/articles.xml'
+import { IArticle } from 'voa-core-shared'
+import { IFeed, IRssEnvolope, IFeedUrl } from './irssenvolope'
+
+export class RssArticle implements IFeed<IRssArticle, IArticle> {
+  readonly feedUrl = 'https://www.rferl.org/mobapp/articles.xml'
+
+  mapData(data: IRssEnvolope): IRssArticle[] {
+    return data.rss.channel.item.map(i => i.article)
+  }
+
+  adaptData(source: IRssArticle[]): IArticle[] {
+    return [] as IArticle[]
+  }
+}
 
 export interface IRssArticleEnvelope {
   article: IRssArticle
