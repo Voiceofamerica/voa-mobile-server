@@ -1,4 +1,4 @@
-# voa-mobile-server
+# voa-feed-parser
 > Parses VOA RSS feed to JSON, then adapts data to common mobile app data format
 
 ## Developers
