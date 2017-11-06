@@ -3,7 +3,8 @@
 
 ## Developers
 1. `npm install`
-2. Debug using VS Code debug tools -- `index.ts` exists solely for debugging purposes
+2. `npm test`
+2. Debug using VS Code debug tools -- `debug.ts` exists solely for debugging purposes
 
 ## Deployment
 `serverless.yml` contains AWS Lambda configuration

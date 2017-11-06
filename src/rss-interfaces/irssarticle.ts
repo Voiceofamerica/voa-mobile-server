@@ -1,4 +1,3 @@
-
 export const ArticlesFeedUrl = 'https://www.rferl.org/mobapp/articles.xml'
 
 export interface IRssArticleEnvelope {
@@ -14,7 +13,8 @@ export interface IRssArticle {
   pubDate: string
   lastUpdated: string
   url: string
-  /** Short alternative of the article url. Can be used for Twitter like web site on so on. */
+  /** Short alternative of the article url.
+   * Can be used for Twitter like web site on so on. */
   twitter: string
   title: string
   introduction: string
@@ -50,7 +50,8 @@ export interface IRssArticle {
   video: {
     videoDescription: string
     guid: string
-    /** Defines relation between article and video => 0=SameItem, 1=MainImage,2=EmbededInContent */
+    /** Defines relation between article and video
+     * 0=SameItem, 1=MainImage,2=EmbededInContent */
     relType: number
     id: number
     width: number
@@ -68,7 +69,8 @@ export interface IRssArticle {
     /** a-article, v-video or p-photogallery */
     type: string
     url: string
-    /** Short alternative of the article url. Can be used for Twitter like web site on so on. */
+    /** Short alternative of the article url.
+     * Can be used for Twitter like web site on so on. */
     twitter: string
     thumbnailUrl: string
   }[]
