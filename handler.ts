@@ -15,13 +15,13 @@ class Response {
 }
 
 export async function articles(event, context, callback) {
-  let err
+  let err, articlesArray
 
   try {
-    let articles = await getArticles()
+    articlesArray = await getArticles()
   } catch(ex) {
     err = ex
   } finally {
-    callback(null, new Response(articles, err))
+    callback(null, new Response(articlesArray, err))
   }
 }

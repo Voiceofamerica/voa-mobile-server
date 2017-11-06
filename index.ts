@@ -1,5 +1,5 @@
 import { articles } from "./handler";
 
-articles({}, {}, function(res) {
+articles({}, {}, function(err, res) {
   console.log(res)
 })
