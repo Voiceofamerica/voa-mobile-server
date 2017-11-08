@@ -1,5 +1,5 @@
-import { articles } from './handler'
+import { myAction } from './handler'
 
-articles({}, {}, function(err, res) {
+myAction({}, {}, function(err, res) {
   console.log(res)
 })

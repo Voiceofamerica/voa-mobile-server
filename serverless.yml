@@ -1,4 +1,4 @@
-service: voa-feedparser
+service: voa-mobile-server
 
 plugins:
   - serverless-plugin-typescript
@@ -12,8 +12,8 @@ provider:
 
 functions:
   articles:
-    handler: handler.articles
+    handler: handler.myAction
     events:
       - http:
-          path: articles
+          path: myAction
           method: get
