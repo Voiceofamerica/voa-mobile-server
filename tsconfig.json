@@ -6,11 +6,11 @@
   ],
   "compilerOptions": {
     "preserveConstEnums": true,
+    "strict": true,
     "strictNullChecks": true,
     "target": "es5",
     "outDir": ".build",
-    "rootDir": "./",
-    "lib": ["es2015"],
+    "lib": ["es2015", "esnext.asynciterable"],
     "moduleResolution": "node",
     "types": [
       "node"

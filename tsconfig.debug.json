@@ -1,19 +1,9 @@
 {
-  "compileOnSave": true,
+  "extends": "./tsconfig.json",
   "exclude": [
     "tests"
   ],
   "compilerOptions": {
-    "preserveConstEnums": true,
-    "strictNullChecks": true,
-    "sourceMap": true,
-    "target": "es5",
-    "outDir": ".build",
-    "rootDir": "./",
-    "lib": ["es2015"],
-    "moduleResolution": "node",
-    "types": [
-      "node"
-    ]
+    "sourceMap": true
   }
 }

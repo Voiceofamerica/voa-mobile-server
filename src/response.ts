@@ -5,7 +5,7 @@ export class Response {
     'Content-Type': 'application/json'
   }
 
-  constructor(res, err?) {
+  constructor(res: any, err?: any) {
     this.statusCode = err ? 400 : 200
     this.body = err ? err.message : JSON.stringify(res)
   }

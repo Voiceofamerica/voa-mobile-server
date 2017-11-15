@@ -1,5 +1,5 @@
-import { myAction } from './handler'
+import { graphqlHandler } from './handler'
 
-myAction({}, {}, function(err, res) {
+graphqlHandler({}, {}, function(err: any, res: any) {
   console.log(res)
 })

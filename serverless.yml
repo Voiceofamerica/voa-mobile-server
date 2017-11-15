@@ -11,9 +11,17 @@ provider:
   profile: excella
 
 functions:
-  articles:
-    handler: handler.myAction
+  graphql:
+    handler: handler.graphqlHandler
     events:
       - http:
-          path: myAction
+          path: graphql
+          method: post
+          cors: true
+  graphiql:
+    handler: handler.graphiqlHandler
+    events:
+      - http:
+          path: graphiql
           method: get
+          cors: true
