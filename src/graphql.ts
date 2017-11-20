@@ -19,7 +19,7 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphqlLambda, graphiqlLambda } from 'graphql-server-lambda'
 
-import { voaSchema } from './schema'
+import {} from 'voa-core-shared'
 
 import { resolvers } from './resolvers'
 import { GraphQLSchema } from 'graphql/type/schema'

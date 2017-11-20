@@ -15,7 +15,7 @@
     "predeploy": "npm run standardize && npm run lint && npm test",
     "deploy": "serverless deploy -v",
     "logs": "serverless logs -f graphql -t",
-    "invoke": "serverless invoke -f myAction -l"
+    "invoke": "serverless invoke -f graphql -l"
   },
   "repository": {
     "type": "git",
