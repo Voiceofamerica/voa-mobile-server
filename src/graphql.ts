@@ -19,20 +19,20 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphqlLambda, graphiqlLambda } from 'graphql-server-lambda'
 
-import {} from 'voa-core-shared'
+import { articleSchema } from 'voa-core-shared'
 
 import { resolvers } from './resolvers'
 import { GraphQLSchema } from 'graphql/type/schema'
 import { DocumentNode } from 'graphql'
 
 const myGraphQLSchema = makeExecutableSchema({
-  typeDefs: voaSchema,
+  typeDefs: articleSchema,
   resolvers,
   logger: console,
 })
 
 export function graphqlHandler(event: any, context: any, callback: any) {
-  console.log(voaSchema)
+  console.log(articleSchema)
   console.log('hello gql')
   function callbackFilter(error: any, output: any) {
     output.headers['Access-Control-Allow-Origin'] = '*'

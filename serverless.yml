@@ -2,6 +2,7 @@ service: voa-mobile-server
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-offline
 
 provider:
   name: aws
