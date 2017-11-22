@@ -16,7 +16,7 @@
     "deploy": "serverless deploy -v",
     "logs": "serverless logs -f graphql -t",
     "invoke": "serverless invoke -f graphql -l",
-    "offline": "serverless offline start",
+    "offline": "serverless offline --port 3008 start",
     "update-shared": "npm i https://github.com/Voiceofamerica/voa-core-shared.git"
   },
   "repository": {

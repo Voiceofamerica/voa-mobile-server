@@ -6,13 +6,31 @@ export const resolvers = {
     articles: async (obj: any, args: any, context: any) => {
       return await getArticles(args.source)
     },
+    articleById: async (obj: any, args: any, context: any) => {
+      return await getArticles(args.source, args.id)
+    },
+  },
+  Article: {
+    relatedStories: (obj: any, args: any, context: any) => {
+      return obj.relatedStories
+    },
   },
 }
 
 const serviceUrl = `https://jtd40stvs5.execute-api.us-east-1.amazonaws.com/dev/`
+// const serviceUrl = `http://localhost:3007`
 
-async function getArticles(source: string) {
-  const data = await getData(serviceUrl, 'articles', { source: source })
+async function getArticles(source: string, id?: number) {
+  const queryParams: { [name: string]: string | number } = { source: source }
+  if (id) {
+    queryParams['ArticleId'] = id
+  }
+
+  const data = await getData(serviceUrl, 'articles', queryParams)
+  if (id) {
+    return data[0]
+  }
+  console.log(data)
   return data
 }
 
