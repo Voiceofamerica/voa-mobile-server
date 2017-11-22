@@ -32,8 +32,6 @@ const myGraphQLSchema = makeExecutableSchema({
 })
 
 export function graphqlHandler(event: any, context: any, callback: any) {
-  console.log(articleSchema)
-  console.log('hello gql')
   function callbackFilter(error: any, output: any) {
     output.headers['Access-Control-Allow-Origin'] = '*'
     callback(error, output)
