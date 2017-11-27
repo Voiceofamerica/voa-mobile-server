@@ -1,13 +1,45 @@
-import * as request from 'request-promise-native'
-const url = require('url')
+import { IResolvers } from 'graphql-tools/dist/Interfaces'
+import { makeExecutableSchema } from 'graphql-tools'
+import { getData } from './resolverHelpers'
+import { QueryParams } from 'voa-core-shared/dist/interfaces/queryParams'
 
-export const resolvers = {
+export const resolvers: IResolvers = <IResolvers>{
   Query: {
-    articles: async (obj: any, args: any, context: any) => {
+    articles: async (obj: any, args: { source: string }, context: any) => {
       return await getArticles(args.source)
     },
-    articleById: async (obj: any, args: any, context: any) => {
-      return await getArticles(args.source, args.id)
+    articleById: async (obj: any, args: { source: string; id: number }, context: any) => {
+      const queryParams = { ArticleId: args.id }
+      const data = await getArticles(args.source, queryParams)
+      return data[0]
+    },
+    zones: async (obj: any, args: { source: string }, context: any) => {
+      return await getZones(args.source)
+    },
+    articlesByZoneId: async (
+      obj: any,
+      args: { source: string; zoneId: number },
+      context: any
+    ) => {
+      const queryParams = { ZoneId: args.zoneId }
+      return await getArticles(args.source, queryParams)
+    },
+    search: async (
+      obj: any,
+      args: { source: string; keywords: string; zoneId: number },
+      context: any
+    ) => {
+      const queryParams = { q: args.keywords }
+      const data = await search(args.source, queryParams)
+
+      if (args.zoneId !== 0) {
+        return data.filter((i: any) => i.zone === args.zoneId)
+      }
+
+      return data
+    },
+    breakingNews: async (obj: any, args: { source: string }, context: any) => {
+      return await getBreakingNews(args.source)
     },
   },
   Article: {
@@ -17,25 +49,18 @@ export const resolvers = {
   },
 }
 
-const serviceUrl = `https://jtd40stvs5.execute-api.us-east-1.amazonaws.com/dev/`
-// const serviceUrl = `http://localhost:3007`
-
-async function getArticles(source: string, id?: number) {
-  const queryParams: { [name: string]: string | number } = { source: source }
-  if (id) {
-    queryParams['ArticleId'] = id
-  }
-
-  const data = await getData(serviceUrl, 'articles', queryParams)
-  if (id) {
-    return data[0]
-  }
-  console.log(data)
-  return data
+async function search(source: string, queryParams: QueryParams) {
+  return await getData('search', source, queryParams)
 }
 
-async function getData(baseUrl: string, dataUrl: 'articles', queryParams: any) {
-  console.log(queryParams)
-  const feedUrl = url.resolve(baseUrl, dataUrl)
-  return await request(feedUrl, { qs: queryParams, json: true })
+async function getBreakingNews(source: string) {
+  return await getData('breakingnews', source)
+}
+
+async function getArticles(source: string, queryParams?: QueryParams) {
+  return await getData('articles', source, queryParams)
+}
+
+async function getZones(source: string) {
+  return await getData('zones', source)
 }

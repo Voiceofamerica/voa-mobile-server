@@ -7,9 +7,10 @@ plugins:
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   profile: excella
+  environment: ${file(./env.yml):${opt:stage, self:provider.stage}}
 
 functions:
   graphql:
@@ -18,11 +19,4 @@ functions:
       - http:
           path: graphql
           method: post
-          cors: true
-  graphiql:
-    handler: handler.graphiqlHandler
-    events:
-      - http:
-          path: graphiql
-          method: get
           cors: true

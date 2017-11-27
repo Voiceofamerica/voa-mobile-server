@@ -14,9 +14,11 @@
     "standardize": "prettier *.ts ./src/*.ts ./src/**/*.ts --write",
     "predeploy": "npm run standardize && npm run lint && npm test",
     "deploy": "serverless deploy -v",
+    "deploy:production": "serverless deploy -v --stage prod",
     "logs": "serverless logs -f graphql -t",
     "invoke": "serverless invoke -f graphql -l",
     "offline": "serverless offline --port 3008 start",
+    "offline:local": "serverless --stage local offline --port 3008 start",
     "update-shared": "npm i https://github.com/Voiceofamerica/voa-core-shared.git"
   },
   "repository": {
