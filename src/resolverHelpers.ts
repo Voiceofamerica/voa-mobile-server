@@ -2,10 +2,11 @@ import * as request from 'request-promise-native'
 import { ServiceUrl } from './config'
 import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/queryParams'
 const url = require('url')
+import { Audience } from './enums'
 
 export async function getData(
   dataUrl: 'articles' | 'zones' | 'search' | 'breakingnews',
-  source: string,
+  source: Audience,
   additionalParams?: QueryParams
 ) {
   const queryParams: QueryParams = { source: source }
