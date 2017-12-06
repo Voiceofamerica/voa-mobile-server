@@ -1,16 +1,47 @@
 import { IResolvers } from 'graphql-tools/dist/Interfaces'
 import { makeExecutableSchema } from 'graphql-tools'
 import { getData } from './resolverHelpers'
-import { QueryParams } from 'voa-core-shared/dist/interfaces/queryParams'
+import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/queryParams'
+import { GraphQLEnumType } from 'graphql'
+import { EnumValues } from 'enum-values'
+
+enum ContentType {
+  Article = 'a',
+  Video = 'v',
+  PhotoGallery = 'p',
+}
+
+enum ArticleVideoRelationship {
+  SameItem = '0',
+  MainImage = '1',
+  EmbededInContent = '2',
+}
+
+function convertContentTypeToQueryParams(type: [keyof typeof ContentType]) {
+  const articleType = type.map(t => ContentType[t]).join('')
+  return { Type: articleType }
+}
+
+function wrapAsArray<T>(item: T | T[]): T[] {
+  return Array.isArray(item) ? item : [item]
+}
 
 export const resolvers: IResolvers = <IResolvers>{
   Query: {
-    articles: async (obj: any, args: { source: string }, context: any) => {
-      return await getArticles(args.source)
+    articles: async (
+      obj: any,
+      args: { source: string; type: [keyof typeof ContentType] },
+      context: any
+    ) => {
+      return await getArticles(args.source, args.type)
     },
-    articleById: async (obj: any, args: { source: string; id: number }, context: any) => {
+    articleById: async (
+      obj: any,
+      args: { source: string; type: [keyof typeof ContentType]; id: number },
+      context: any
+    ) => {
       const queryParams = { ArticleId: args.id }
-      const data = await getArticles(args.source, queryParams)
+      const data = await getArticles(args.source, args.type, queryParams)
       return data[0]
     },
     zones: async (obj: any, args: { source: string }, context: any) => {
@@ -18,11 +49,11 @@ export const resolvers: IResolvers = <IResolvers>{
     },
     articlesByZoneId: async (
       obj: any,
-      args: { source: string; zoneId: number },
+      args: { source: string; type: [keyof typeof ContentType]; zoneId: number },
       context: any
     ) => {
       const queryParams = { ZoneId: args.zoneId }
-      return await getArticles(args.source, queryParams)
+      return await getArticles(args.source, args.type, queryParams)
     },
     search: async (
       obj: any,
@@ -43,8 +74,24 @@ export const resolvers: IResolvers = <IResolvers>{
     },
   },
   Article: {
+    type: (obj: any, args: any, context: any) => {
+      return EnumValues.getNameFromValue(ContentType, obj.type)
+    },
+    authors: (obj: any, args: any, context: any) => {
+      return obj.authors ? wrapAsArray(obj.authors.author) : []
+    },
     relatedStories: (obj: any, args: any, context: any) => {
-      return obj.relatedStories
+      return obj.relatedStories ? wrapAsArray(obj.relatedStories.story) : []
+    },
+  },
+  RelatedStory: {
+    type: (obj: any, args: any, context: any) => {
+      return EnumValues.getNameFromValue(ContentType, obj.type)
+    },
+  },
+  Video: {
+    relType: (obj: any, args: any, context: any) => {
+      return EnumValues.getNameFromValue(ArticleVideoRelationship, obj.relType)
     },
   },
 }
@@ -57,8 +104,14 @@ async function getBreakingNews(source: string) {
   return await getData('breakingnews', source)
 }
 
-async function getArticles(source: string, queryParams?: QueryParams) {
-  return await getData('articles', source, queryParams)
+async function getArticles(
+  source: string,
+  type: [keyof typeof ContentType],
+  queryParams?: QueryParams
+) {
+  const typeParams = convertContentTypeToQueryParams(type)
+  Object.assign(typeParams, queryParams)
+  return await getData('articles', source, typeParams)
 }
 
 async function getZones(source: string) {

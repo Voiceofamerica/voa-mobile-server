@@ -2,7 +2,7 @@ import { resolvers } from './resolvers'
 import { makeExecutableSchema } from 'graphql-tools'
 import { graphqlLambda, graphiqlLambda } from 'graphql-server-lambda'
 
-import { schema } from 'voa-core-shared'
+import { schema } from '@voiceofamerica/voa-core-shared'
 
 const executableSchema = makeExecutableSchema({
   typeDefs: schema,
