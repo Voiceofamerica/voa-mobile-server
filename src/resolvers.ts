@@ -77,23 +77,40 @@ export const resolvers: IResolvers = <IResolvers>{
     },
   },
   Article: {
-    type: (obj: any, args: any, context: any) => {
+    type: (obj: any) => {
       return EnumValues.getNameFromValue(ContentType, obj.type)
     },
-    authors: (obj: any, args: any, context: any) => {
+    authors: (obj: any) => {
       return obj.authors ? wrapAsArray(obj.authors.author) : []
     },
-    relatedStories: (obj: any, args: any, context: any) => {
+    relatedStories: (obj: any) => {
       return obj.relatedStories ? wrapAsArray(obj.relatedStories.story) : []
+    },
+    photoGallery: (obj: any, args: any, context: any) => {
+      return obj.photogallery
+    },
+  },
+  PhotoGallery: {
+    photoGalleryTitle: (obj: any) => {
+      return obj.photogalleryTitle
+    },
+    photoGalleryDescription: (obj: any) => {
+      return obj.photogalleryDescription
+    },
+    relType: (obj: any) => {
+      return EnumValues.getNameFromValue(ArticleVideoRelationship, obj.relType)
+    },
+    photo: (obj: any) => {
+      return obj ? wrapAsArray(obj.photo) : []
     },
   },
   RelatedStory: {
-    type: (obj: any, args: any, context: any) => {
+    type: (obj: any) => {
       return EnumValues.getNameFromValue(ContentType, obj.type)
     },
   },
   Video: {
-    relType: (obj: any, args: any, context: any) => {
+    relType: (obj: any) => {
       return EnumValues.getNameFromValue(ArticleVideoRelationship, obj.relType)
     },
   },
