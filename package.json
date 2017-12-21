@@ -31,7 +31,8 @@
   },
   "homepage": "https://github.com/Voiceofamerica/voa-mobile-server#readme",
   "dependencies": {
-    "@voiceofamerica/voa-core-shared": "^1.42.0",
+    "@types/lodash": "^4.14.88",
+    "@voiceofamerica/voa-core-shared": "^1.47.0",
     "apollo-link": "^1.0.0",
     "aws-lambda": "^0.1.2",
     "bluebird": "^3.5.1",
@@ -40,6 +41,7 @@
     "graphql-server-lambda": "^1.2.0",
     "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.7.2",
+    "lodash": "^4.17.4",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },

@@ -5,6 +5,7 @@ import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/que
 import { GraphQLEnumType } from 'graphql'
 import { EnumValues } from 'enum-values'
 import { Audience } from './enums'
+import { memoize, uniqBy } from 'lodash'
 
 enum ContentType {
   Article = 'a',
@@ -38,10 +39,23 @@ function wrapAsArray<T>(item: T | T[]): T[] {
 interface IContentQueryParams {
   source: keyof typeof Audience
   type: [keyof typeof ContentType]
-  id: number
-  zoneId: number
-  count: number
+  id?: number
+  zoneId?: number
+  count?: number
 }
+
+function filterByZoneId(data: any[], zoneId?: number): any[] {
+  if (zoneId) {
+    return data.filter((i: any) => {
+      return parseInt(i.zone) === zoneId
+    })
+  }
+  return data
+}
+
+const noOp = memoize(() => {
+  return []
+})
 
 export const resolvers: IResolvers = <IResolvers>{
   Query: {
@@ -53,17 +67,12 @@ export const resolvers: IResolvers = <IResolvers>{
     },
     search: async (
       obj: any,
-      args: { source: keyof typeof Audience; keywords: string; zoneId: number },
+      args: { source: keyof typeof Audience; keywords: string; zoneId?: number },
       context: any
     ) => {
       const queryParams = { q: args.keywords }
       const data = await search(Audience[args.source], queryParams)
-
-      if (args.zoneId !== 0) {
-        return data.filter((i: any) => i.zone === args.zoneId)
-      }
-
-      return data
+      return filterByZoneId(data, args.zoneId)
     },
     breakingNews: async (
       obj: any,
@@ -73,7 +82,7 @@ export const resolvers: IResolvers = <IResolvers>{
       return await getBreakingNews(Audience[args.source])
     },
     program: async (obj: any, args: IContentQueryParams, context: any) => {
-      return await getContent(args)
+      return await videoSchedule(Audience[args.source])
     },
   },
   Article: {
@@ -87,7 +96,7 @@ export const resolvers: IResolvers = <IResolvers>{
       return obj.relatedStories ? wrapAsArray(obj.relatedStories.story) : []
     },
     photoGallery: (obj: any, args: any, context: any) => {
-      return obj.photogallery
+      return obj.photogallery ? wrapAsArray(obj.photogallery) : []
     },
   },
   PhotoGallery: {
@@ -117,25 +126,67 @@ export const resolvers: IResolvers = <IResolvers>{
 }
 
 async function getContent(args: IContentQueryParams) {
+  const getTopNews = args.zoneId
+    ? noOp
+    : memoize(async () => getData('topstories', Audience[args.source]))
+
   const queryParams = convertContentTypeToQueryParams(args.type)
-  if (args.id > 0) {
+
+  if (args.id) {
     Object.assign(queryParams, { ArticleId: args.id })
   }
 
-  if (args.zoneId > 0) {
+  if (args.zoneId) {
     Object.assign(queryParams, { ZoneId: args.zoneId })
   }
 
-  if (args.count > 0) {
+  if (args.count) {
     Object.assign(queryParams, { Count: args.count })
   }
 
-  return await getData('articles', Audience[args.source], queryParams)
+  const getArticles = memoize(async () =>
+    getData('articles', Audience[args.source], queryParams)
+  )
 
-  // TODO: merge topnews (including zoneid filter)
-  // limit by count
-  // de-dupe by articleId
+  const containsAudioClip = args.type.includes('Clip')
+  const getAudioClips = !containsAudioClip
+    ? noOp
+    : memoize(async () => {
+        // overwrite type parameters for audio clips to defaults 'cf'
+        queryParams.Type = 'cf'
+        return await getData('audioclips', Audience[args.source], queryParams)
+      })
+
+  const convertAudioClipsToArticle = memoize(async () => {
+    const audioData = await getAudioClips()
+    console.log(audioData)
+    return audioData.map(a => convertAudioClipsToArticleHelper(a))
+  })
+
+  const [articles, topNews, articleClips] = await Promise.all([
+    getArticles(),
+    getTopNews(),
+    convertAudioClipsToArticle(),
+  ])
+
+  const content = articles.concat(articleClips)
+  // sort by date, desc
   // merge audio clips, de-dupe by article.audio url
+
+  let data = topNews.concat(content)
+  data = uniqBy(data, i => i.id)
+
+  return args.id
+    ? data.filter(i => parseInt(i.id) === args.id)
+    : data.slice(0, args.count)
+}
+
+function convertAudioClipsToArticleHelper(source: {}): {} {
+  return source
+}
+
+async function videoSchedule(source: Audience) {
+  return await getData('videoscheduler', source)
 }
 
 async function search(source: Audience, queryParams: QueryParams) {

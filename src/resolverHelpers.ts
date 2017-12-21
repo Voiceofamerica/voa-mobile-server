@@ -3,18 +3,38 @@ import { ServiceUrl } from './config'
 import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/queryParams'
 const url = require('url')
 import { Audience } from './enums'
+import * as _ from 'lodash'
 
 export async function getData(
-  dataUrl: 'articles' | 'zones' | 'search' | 'breakingnews',
+  dataUrl:
+    | 'articles'
+    | 'zones'
+    | 'search'
+    | 'breakingnews'
+    | 'topstories'
+    | 'scheduler'
+    | 'videoscheduler'
+    | 'liveaudio'
+    | 'livevideo'
+    | 'audioclips',
   source: Audience,
   additionalParams?: QueryParams
 ) {
   const queryParams: QueryParams = { source: source }
+  if (additionalParams) {
+    additionalParams = <QueryParams>_.pickBy(additionalParams, _.identity)
+  }
   Object.assign(queryParams, additionalParams)
-  return await getDataHelper(ServiceUrl, dataUrl, queryParams)
+  const data = await getDataHelper(ServiceUrl, dataUrl, queryParams)
+  console.log(dataUrl + ': ' + JSON.stringify(queryParams) + ': ' + data.length)
+  return data.filter(i => i)
 }
 
-async function getDataHelper(baseUrl: string, dataUrl: string, queryParams: any) {
+async function getDataHelper(
+  baseUrl: string,
+  dataUrl: string,
+  queryParams: any
+): Promise<any[]> {
   const feedUrl = url.resolve(baseUrl, dataUrl)
   return await request(feedUrl, { qs: queryParams, json: true })
 }
