@@ -148,6 +148,7 @@ async function getContent(args: IContentQueryParams) {
     getData('articles', Audience[args.source], queryParams)
   )
 
+  // tslint:disable-next-line
   const containsAudioClip = args.type.includes('Clip')
   const getAudioClips = !containsAudioClip
     ? noOp
@@ -159,7 +160,7 @@ async function getContent(args: IContentQueryParams) {
 
   const convertAudioClipsToArticle = memoize(async () => {
     const audioData = await getAudioClips()
-    console.log(audioData)
+    // tslint:disable-next-line
     return audioData.map(a => convertAudioClipsToArticleHelper(a))
   })
 
