@@ -15,3 +15,7 @@
 
 ## Further Reading
 - https://github.com/creditkarma/graphql-loader
+
+## Endpoints
+* dev: https://ncgi56w1eb.execute-api.us-east-1.amazonaws.com/dev
+* prod: https://wqhcmo9hpa.execute-api.us-east-1.amazonaws.com/prod

@@ -9,7 +9,7 @@ provider:
   runtime: nodejs6.10
   stage: ${opt:stage, 'dev'}
   region: us-east-1
-  profile: excella
+  profile: voa
   environment: ${file(./env.yml):${opt:stage, self:provider.stage}}
 
 functions:
