@@ -127,8 +127,8 @@ export const resolvers: IResolvers = <IResolvers>{
 }
 
 async function getContent(args: IContentQueryParams) {
-  let noopTopNews = !(args.topNews || false) || args.zoneId
-  let contentType = args.type.join(',')
+  const noopTopNews = !(args.topNews || false) || args.zoneId
+  const contentType = args.type.join(',')
 
   const getTopNews = noopTopNews
     ? noOp
