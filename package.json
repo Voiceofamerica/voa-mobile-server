@@ -11,7 +11,7 @@
     "test": "JASMINE_CONFIG_PATH=./jasmine.json jasmine",
     "posttest": "rimraf .build",
     "lint": "tslint -p .",
-    "standardize": "prettier *.ts ./src/*.ts ./src/**/*.ts --write",
+    "standardize": "prettier '**/*.ts' --write",
     "predeploy": "npm run standardize && npm run lint && npm test",
     "deploy": "serverless deploy -v",
     "deploy:production": "serverless deploy -v --stage prod",
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/Voiceofamerica/voa-mobile-server#readme",
   "dependencies": {
     "@types/lodash": "^4.14.88",
-    "@voiceofamerica/voa-core-shared": "^1.47.0",
+    "@voiceofamerica/voa-core-shared": "^1.48.0",
     "apollo-link": "^1.0.0",
     "aws-lambda": "^0.1.2",
     "bluebird": "^3.5.1",

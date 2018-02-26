@@ -42,6 +42,7 @@ interface IContentQueryParams {
   id?: number
   zoneId?: number
   count?: number
+  topNews?: boolean
 }
 
 function filterByZoneId(data: any[], zoneId?: number): any[] {
@@ -126,30 +127,38 @@ export const resolvers: IResolvers = <IResolvers>{
 }
 
 async function getContent(args: IContentQueryParams) {
-  const getTopNews = args.zoneId
+  let noopTopNews = !(args.topNews || false) || args.zoneId
+  let contentType = args.type.join(',')
+
+  const getTopNews = noopTopNews
     ? noOp
     : memoize(async () => getData('topstories', Audience[args.source]))
 
   const queryParams = convertContentTypeToQueryParams(args.type)
 
   if (args.id) {
-    Object.assign(queryParams, { ArticleId: args.id })
+    Object.assign(queryParams, {
+      ArticleId: args.id,
+    })
   }
 
   if (args.zoneId) {
-    Object.assign(queryParams, { ZoneId: args.zoneId })
+    Object.assign(queryParams, {
+      ZoneId: args.zoneId,
+    })
   }
 
   if (args.count) {
-    Object.assign(queryParams, { Count: args.count })
+    Object.assign(queryParams, {
+      Count: args.count,
+    })
   }
 
   const getArticles = memoize(async () =>
     getData('articles', Audience[args.source], queryParams)
   )
 
-  // tslint:disable-next-line
-  const containsAudioClip = args.type.includes('Clip')
+  const containsAudioClip = contentType.includes('Clip')
   const getAudioClips = !containsAudioClip
     ? noOp
     : memoize(async () => {
