@@ -45,6 +45,12 @@ interface IContentQueryParams {
   topNews?: boolean
 }
 
+interface IProgramQueryParams {
+  source: keyof typeof Audience
+  type: [keyof typeof ProgramType]
+  zoneId?: number
+}
+
 function filterByZoneId(data: any[], zoneId?: number): any[] {
   if (zoneId) {
     return data.filter((i: any) => {
@@ -82,8 +88,9 @@ export const resolvers: IResolvers = <IResolvers>{
     ) => {
       return await getBreakingNews(Audience[args.source])
     },
-    program: async (obj: any, args: IContentQueryParams, context: any) => {
-      return await videoSchedule(Audience[args.source])
+    program: async (obj: any, args: IProgramQueryParams, context: any) => {
+      const data = await videoSchedule(Audience[args.source])
+      return filterByZoneId(data, args.zoneId)
     },
   },
   Article: {
