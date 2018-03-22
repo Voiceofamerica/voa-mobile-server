@@ -89,6 +89,18 @@ export const resolvers: IResolvers = <IResolvers>{
       return await getBreakingNews(Audience[args.source])
     },
     program: async (obj: any, args: IProgramQueryParams, context: any) => {
+      const programType = args.type.join(',')
+      const containsBroadcastProgram = programType.includes('BroadcastProgram')
+
+      if (containsBroadcastProgram && Audience[args.source] === Audience.fa) {
+        const broadcastData = await liveVideo(Audience[args.source])
+        if (broadcastData.length > 0) {
+          broadcastData[0].url =
+            'https://av.voanews.com/Videoroot/Pangeavideo/2018/03/2/29/29828ddc-6435-4d81-8cac-d3ad2cc4eb61.mp4'
+        }
+        return broadcastData
+      }
+
       const data = await videoSchedule(Audience[args.source])
       return filterByZoneId(data, args.zoneId)
     },
@@ -105,6 +117,11 @@ export const resolvers: IResolvers = <IResolvers>{
     },
     photoGallery: (obj: any, args: any, context: any) => {
       return obj.photogallery ? wrapAsArray(obj.photogallery) : []
+    },
+  },
+  Program: {
+    type: (obj: any) => {
+      return EnumValues.getNameFromValue(ProgramType, obj.type)
     },
   },
   PhotoGallery: {
@@ -200,6 +217,10 @@ async function getContent(args: IContentQueryParams) {
 
 function convertAudioClipsToArticleHelper(source: {}): {} {
   return source
+}
+
+async function liveVideo(source: Audience) {
+  return await getData('livevideo', source)
 }
 
 async function videoSchedule(source: Audience) {
