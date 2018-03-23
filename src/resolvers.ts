@@ -96,7 +96,7 @@ export const resolvers: IResolvers = <IResolvers>{
         const broadcastData = await liveVideo(Audience[args.source])
         if (broadcastData.length > 0) {
           broadcastData[0].url =
-            'https://av.voanews.com/Videoroot/Pangeavideo/2018/03/2/29/29828ddc-6435-4d81-8cac-d3ad2cc4eb61.mp4'
+            'https://voa-lh.akamaihd.net/i/voapnn_7@72817/master.m3u8'
         }
         return broadcastData
       }
