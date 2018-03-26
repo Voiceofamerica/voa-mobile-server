@@ -91,6 +91,7 @@ export const resolvers: IResolvers = <IResolvers>{
     program: async (obj: any, args: IProgramQueryParams, context: any) => {
       const programType = args.type.join(',')
       const containsBroadcastProgram = programType.includes('BroadcastProgram')
+      const containsClip = programType.includes('Clip')
 
       if (containsBroadcastProgram && Audience[args.source] === Audience.fa) {
         const broadcastData = await liveVideo(Audience[args.source])
@@ -100,8 +101,18 @@ export const resolvers: IResolvers = <IResolvers>{
         }
         return broadcastData
       }
+      if (containsClip && Audience[args.source] === Audience.fa) {
+        const broadcastData = await liveVideo(Audience[args.source])
+        if (broadcastData.length > 0) {
+          broadcastData[0].url =
+            'https://voa-19.akacast.akamaistream.net/7/309/322031/v1/ibb.akacast.akamaistream.net/voa-19.mp3'
+          broadcastData[0].type = ProgramType.Clip
+        }
+        return broadcastData
+      }
 
-      const data = await videoSchedule(Audience[args.source])
+      let data = await videoSchedule(Audience[args.source])
+      data = data.filter(d => d.url)
       return filterByZoneId(data, args.zoneId)
     },
   },
