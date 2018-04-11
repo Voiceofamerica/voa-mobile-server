@@ -43,6 +43,7 @@
     "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.7.2",
     "lodash": "^4.17.4",
+    "moment": "^2.22.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   },
