@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf .build && tsc",
-    "build:debug": "rimraf .build && tsc -p tsconfig.debug.json",
+    "clean": "rimraf .build .serverless",
+    "build": "npm run clean && tsc",
+    "build:debug": "rnpm run clean && tsc -p tsconfig.debug.json",
     "build:test": "tsc -p tests",
     "pretest": "npm run build:test",
     "test": "JASMINE_CONFIG_PATH=./jasmine.json jasmine",
@@ -32,7 +33,7 @@
   "homepage": "https://github.com/Voiceofamerica/voa-mobile-server#readme",
   "dependencies": {
     "@types/lodash": "^4.14.88",
-    "@voiceofamerica/voa-core-shared": "^1.49.0",
+    "@voiceofamerica/voa-core-shared": "^1.53.0",
     "apollo-link": "^1.0.0",
     "aws-lambda": "^0.1.2",
     "bluebird": "^3.5.1",
