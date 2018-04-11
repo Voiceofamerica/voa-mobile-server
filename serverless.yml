@@ -13,7 +13,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   profile: voa
