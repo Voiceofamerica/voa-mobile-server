@@ -1,6 +1,6 @@
 import { IResolvers } from 'graphql-tools/dist/Interfaces'
 import { makeExecutableSchema } from 'graphql-tools'
-import { getData } from './resolverHelpers'
+import { getData, mapImageUrl } from './resolverHelpers'
 import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/queryParams'
 import { GraphQLEnumType } from 'graphql'
 import { EnumValues } from 'enum-values'
@@ -61,10 +61,14 @@ function filterByZoneId(data: any[], zoneId?: number): any[] {
 }
 
 const noOp = memoize(() => {
-  return []
+  return [] as any[]
 })
 
-export const resolvers: IResolvers = <IResolvers>{
+const tinySize = 'w125'
+const thumbSize = 'w200'
+const heroSize = 'w500'
+
+export const resolvers = <IResolvers>{
   Query: {
     content: async (obj: any, args: IContentQueryParams, context: any) => {
       return await getContent(args)
@@ -149,14 +153,54 @@ export const resolvers: IResolvers = <IResolvers>{
       return obj ? wrapAsArray(obj.photo) : []
     },
   },
+  Photo: {
+    tiny: (obj: any) => {
+      return mapImageUrl(obj.url, tinySize)
+    },
+    thumb: (obj: any) => {
+      return mapImageUrl(obj.url, thumbSize)
+    },
+    hero: (obj: any) => {
+      return mapImageUrl(obj.url, heroSize)
+    },
+  },
+  Image: {
+    tiny: (obj: any) => {
+      return mapImageUrl(obj.url, tinySize)
+    },
+    thumb: (obj: any) => {
+      return mapImageUrl(obj.url, thumbSize)
+    },
+    hero: (obj: any) => {
+      return mapImageUrl(obj.url, heroSize)
+    },
+  },
   RelatedStory: {
     type: (obj: any) => {
       return EnumValues.getNameFromValue(ContentType, obj.type)
+    },
+    thumbnailTiny: (obj: any) => {
+      return mapImageUrl(obj.thumbnailUrl, tinySize)
+    },
+    thumbnailThumb: (obj: any) => {
+      return mapImageUrl(obj.thumbnailUrl, thumbSize)
+    },
+    thumbnailHero: (obj: any) => {
+      return mapImageUrl(obj.thumbnailUrl, heroSize)
     },
   },
   Video: {
     relType: (obj: any) => {
       return EnumValues.getNameFromValue(ArticleVideoRelationship, obj.relType)
+    },
+    thumbnailTiny: (obj: any) => {
+      return mapImageUrl(obj.thumbnail, tinySize)
+    },
+    thumbnailThumb: (obj: any) => {
+      return mapImageUrl(obj.thumbnail, thumbSize)
+    },
+    thumbnailHero: (obj: any) => {
+      return mapImageUrl(obj.thumbnail, heroSize)
     },
   },
 }
@@ -204,7 +248,6 @@ async function getContent(args: IContentQueryParams) {
 
   const convertAudioClipsToArticle = memoize(async () => {
     const audioData = await getAudioClips()
-    // tslint:disable-next-line
     return audioData.map(a => convertAudioClipsToArticleHelper(a))
   })
 
