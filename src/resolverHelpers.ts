@@ -1,4 +1,5 @@
 import * as request from 'request-promise-native'
+import { URL } from 'url'
 import { ServiceUrl } from './config'
 import { QueryParams } from '@voiceofamerica/voa-core-shared/dist/interfaces/queryParams'
 const url = require('url')
@@ -37,4 +38,20 @@ async function getDataHelper(
 ): Promise<any[]> {
   const feedUrl = url.resolve(baseUrl, dataUrl)
   return await request(feedUrl, { qs: queryParams, json: true })
+}
+
+const pathRgx = /\/(.{36})((?:_tv)?)((?:_[^\._]+)*)\.(.*)/
+export function mapImageUrl(imgUrl: string, params: string) {
+  const parsedUrl = new URL(imgUrl)
+  const pathParts = pathRgx.exec(parsedUrl.pathname)
+  if (pathParts === null) {
+    return imgUrl
+  }
+
+  const guid = pathParts[1]
+  const tv = pathParts[2]
+  const mods = pathParts[3]
+  const ext = pathParts[4]
+  parsedUrl.pathname = `${guid}${tv}_${params}${mods}.${ext}`
+  return parsedUrl.toString()
 }
