@@ -1,8 +1,8 @@
 export class Response {
   public readonly statusCode: number
   public readonly body: string
-  public readonly headers: {
-    'Content-Type': 'application/json'
+  public readonly headers = {
+    'Content-Type': 'application/json',
   }
 
   constructor(res: any, err?: any) {
