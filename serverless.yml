@@ -3,6 +3,7 @@ service: voa-mobile-server
 plugins:
   - serverless-plugin-typescript
   - serverless-domain-manager
+  - serverless-content-encoding
   - serverless-offline
 
 custom:
@@ -10,6 +11,8 @@ custom:
     domainName: ${opt:stage, 'dev'}.voamobileendpoints.com
     basePath: server
     stage: ${opt:stage, 'dev'}
+  contentEncoding:
+    minimumCompressionSize: 0 # Minimum body size required for compression in bytes
 
 provider:
   name: aws
