@@ -41,7 +41,11 @@ async function getDataHelper(
 }
 
 const pathRgx = /\/(.{36})((?:_tv)?)((?:_[^\._]+)*)\.(.*)/
-export function mapImageUrl(imgUrl: string, params: string) {
+export function mapImageUrl(imgUrl: string | undefined, params: string) {
+  if (!imgUrl) {
+    return imgUrl
+  }
+
   const parsedUrl = new URL(imgUrl)
   const pathParts = pathRgx.exec(parsedUrl.pathname)
   if (pathParts === null) {
