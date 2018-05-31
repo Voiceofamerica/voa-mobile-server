@@ -4,6 +4,8 @@ export enum Audience {
   fa = 'fa',
   ko = 'ko',
   ur = 'ur',
+  prs = 'prs',
+  pus = 'pus',
   vi = 'vi',
   zhcn = 'zh',
   zhtw = 'tw',
