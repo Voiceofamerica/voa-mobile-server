@@ -57,7 +57,7 @@
     "jasmine": "^3.1.0",
     "prettier": "^1.11.1",
     "rimraf": "^2.6.2",
-    "serverless": "^1.27.3",
+    "serverless": "^1.28.0",
     "serverless-content-encoding": "^1.0.20",
     "serverless-domain-manager": "^2.3.6",
     "serverless-offline": "^3.24.5",
