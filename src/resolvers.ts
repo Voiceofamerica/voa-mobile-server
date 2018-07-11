@@ -51,6 +51,11 @@ interface IProgramQueryParams {
   zoneId?: number
 }
 
+interface IAudioProgramQueryParams {
+  source: keyof typeof Audience
+  zoneId?: number
+}
+
 function filterByZoneId(data: any[], zoneId?: number): any[] {
   if (zoneId) {
     return data.filter((i: any) => {
@@ -118,6 +123,16 @@ export const resolvers = <IResolvers>{
       let data = await videoSchedule(Audience[args.source])
       data = data.filter(d => d.url)
       return filterByZoneId(data, args.zoneId)
+    },
+    audioProgram: async (
+      obj: any,
+      { source, zoneId }: IAudioProgramQueryParams,
+      context: any
+    ) => {
+      const queryParams = { zoneId }
+      let data = await audioSchedule(Audience[source], queryParams as QueryParams)
+      data = data.filter(d => d.url)
+      return data
     },
   },
   Article: {
@@ -279,6 +294,10 @@ async function liveVideo(source: Audience) {
 
 async function videoSchedule(source: Audience) {
   return await getData('videoscheduler', source)
+}
+
+async function audioSchedule(source: Audience, queryParams: QueryParams) {
+  return await getData('scheduler', source, queryParams)
 }
 
 async function search(source: Audience, queryParams: QueryParams) {

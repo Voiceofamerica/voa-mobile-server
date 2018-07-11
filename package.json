@@ -33,7 +33,7 @@
   "homepage": "https://github.com/Voiceofamerica/voa-mobile-server#readme",
   "dependencies": {
     "@types/lodash": "^4.14.106",
-    "@voiceofamerica/voa-core-shared": "^1.55.0",
+    "@voiceofamerica/voa-core-shared": "^1.57.0",
     "apollo-link": "^1.2.1",
     "aws-lambda": "^0.1.2",
     "bluebird": "^3.5.1",
